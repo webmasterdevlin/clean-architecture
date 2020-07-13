@@ -1,15 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Enums\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="interfaces\" />
-    <Folder Include="Services\" />
-    <Folder Include="ValueObjects\" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="MongoDB.Bson" Version="2.10.4" />
+		<PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+		<PackageReference Include="MongoDB.Driver.Core" Version="2.10.4" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Enums\" />
+		<Folder Include="Exceptions\" />
+		<Folder Include="Services\" />
+		<Folder Include="ValueObjects\" />
+	</ItemGroup>
 </Project>

@@ -1,11 +1,15 @@
+using ApplicationCore.interfaces;
+using Infrastructure.Data.Configurations.MongoDb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Web.Services;
+using AutoMapper;
+using MediatR;
 
 namespace Web
 {
@@ -21,6 +25,25 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<TourOfHeroesDatabaseSettings>(
+                Configuration.GetSection(nameof(TourOfHeroesDatabaseSettings))
+                );
+
+            services.AddSingleton<ITourOfHeroesDatabaseSettings>(provider =>
+                provider.GetRequiredService<IOptions<TourOfHeroesDatabaseSettings>>().Value);
+
+            services.AddSingleton<IHeroRepository, HeroRepository>();
+
+            services.AddMediatR(typeof(Startup));
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
