@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Web.Services;
 using AutoMapper;
 using MediatR;
+using Prometheus;
 
 namespace Web
 {
@@ -72,6 +73,8 @@ namespace Web
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseMetricServer(); // Prometheus
 
             app.UseEndpoints(endpoints =>
             {
