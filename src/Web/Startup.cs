@@ -15,6 +15,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.OpenApi.Models;
 using Prometheus;
+using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Web
@@ -52,6 +53,8 @@ namespace Web
 
             services.AddControllersWithViews();
 
+            services.AddHealthChecks(); // Add health check services
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -83,7 +86,6 @@ namespace Web
             }
 
             app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.RoutePrefix = "api-docs";
@@ -94,12 +96,15 @@ namespace Web
             app.UseStaticFiles();
             app.UseSpaStaticFiles(); // Front-end should be separated from here
 
+            app.UseSerilogRequestLogging(); // Serilog
+
             app.UseRouting();
 
             app.UseMetricServer(); // Prometheus Monitoring Exporter
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health"); //Add health check endpoint
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
