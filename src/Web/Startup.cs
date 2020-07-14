@@ -74,7 +74,7 @@ namespace Web
 
             app.UseRouting();
 
-            app.UseMetricServer(); // Prometheus
+            app.UseMetricServer(); // Prometheus Monitoring Exporter
 
             app.UseEndpoints(endpoints =>
             {
